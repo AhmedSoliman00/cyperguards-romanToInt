@@ -10,22 +10,22 @@ function App(){
   const handleConvert = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(''); className='input'
+    setError(''); 
     setResult(null);
  
   try {
-      const res = await fetch('http://localhost:3000/api/convert', {
+      const res = await fetch('http://localhost:5000/api/convert', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ roman }),
+        body: JSON.stringify({ numeral: roman }),
       });
 
  const data = await res.json();
 
  if (!res.ok) {
-        throw new Error(data.message || 'Something went wrong');
+        throw new Error(data.message || 'Invalid Roman numeral format');
       }
 
       setResult(data.integer);
@@ -34,7 +34,7 @@ function App(){
      if (err.message === 'Failed to fetch') {
         setError('❌ Sorry, something went wrong. Please try again later');
     } else {
-        setError(err.message || 'Something went wrong');
+        setError(err.message || 'Invalid Roman numeral format');
     }
 
     } finally {
