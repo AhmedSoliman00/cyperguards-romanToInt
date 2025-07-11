@@ -5,6 +5,7 @@ require('dotenv').config()
 // Import routes and middleware
 const romanRoutes = require('./routes/roman')
 const logger = require('./middleware/logger')
+const connectDB = require('./config/db')
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -24,6 +25,8 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() })
 })
 
+app.use('/api', romanRoutes)
+
 app.use((err, req, res, next) => {
   console.error(err.stack)
   res.status(500).json({ error: 'Something went wrong!' })
@@ -33,7 +36,18 @@ app.use('*', (req, res) => {
   res.status(404).json({ error: 'Route not found' })
 })
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
-  console.log(`Health check: http://localhost:${PORT}/health`)
-})
+// Connect to database and start server
+const startServer = async () => {
+  try {
+    await connectDB()
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`)
+      console.log(`Health check: http://localhost:${PORT}/health`)
+    })
+  } catch (error) {
+    console.error('Failed to start server:', error.message)
+    process.exit(1)
+  }
+}
+
+startServer()

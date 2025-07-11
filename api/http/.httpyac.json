@@ -1,0 +1,19 @@
+{
+  "environments": {
+    "local": {
+      "baseUrl": "http://localhost:5000",
+      "apiUrl": "{{baseUrl}}/api"
+    },
+    "dev": {
+      "baseUrl": "http://localhost:3000",
+      "apiUrl": "{{baseUrl}}/api"
+    }
+  },
+  "request": {
+    "timeout": 30000,
+    "followRedirect": true
+  },
+  "log": {
+    "level": 2
+  }
+}

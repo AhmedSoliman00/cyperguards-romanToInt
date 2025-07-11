@@ -1,0 +1,137 @@
+# Complete Test Suite
+# Comprehensive test workflow for the Roman to Integer API
+
+@baseUrl = http://localhost:5000
+@apiUrl = {{baseUrl}}/api
+
+### Step 1: Health Check
+# @name step1_healthCheck
+GET {{baseUrl}}/health
+
+### Step 2: Basic API Check
+# @name step2_apiCheck
+GET {{baseUrl}}/
+
+### Step 3: Simple Conversion Test
+# @name step3_simpleConversion
+POST {{apiUrl}}/convert
+Content-Type: application/json
+
+{
+  "numeral": "X"
+}
+
+### Step 4: Complex Conversion Test
+# @name step4_complexConversion
+POST {{apiUrl}}/convert
+Content-Type: application/json
+
+{
+  "numeral": "MCMXC"
+}
+
+### Step 5: Error Handling Test
+# @name step5_errorHandling
+POST {{apiUrl}}/convert
+Content-Type: application/json
+
+{
+  "numeral": "INVALID"
+}
+
+### Step 6: GET Method Test
+# @name step6_getMethod
+GET {{apiUrl}}/convert?numeral=XIV
+
+### Step 7: Case Insensitive Test
+# @name step7_caseInsensitive
+POST {{apiUrl}}/convert
+Content-Type: application/json
+
+{
+  "numeral": "xiii"
+}
+
+### Step 8: History Check (Empty)
+# @name step8_historyEmpty
+GET {{apiUrl}}/history
+
+### Step 9: Add Multiple Conversions
+# @name step9_conversion1
+POST {{apiUrl}}/convert
+Content-Type: application/json
+
+{
+  "numeral": "I"
+}
+
+###
+# @name step9_conversion2
+POST {{apiUrl}}/convert
+Content-Type: application/json
+
+{
+  "numeral": "V"
+}
+
+###
+# @name step9_conversion3
+POST {{apiUrl}}/convert
+Content-Type: application/json
+
+{
+  "numeral": "X"
+}
+
+### Step 10: Check History with Data
+# @name step10_historyWithData
+GET {{apiUrl}}/history
+
+### Step 11: Check History with Limit
+# @name step11_historyLimited
+GET {{apiUrl}}/history?limit=2
+
+### Step 12: Test CRUD Operations - Get All Conversions
+# @name step12_getAllConversions
+GET {{apiUrl}}/conversions
+
+### Step 13: Test CRUD Operations - Get Specific Conversion
+# Note: Replace the ID below with an actual ID from step 12 response
+# @name step13_getSpecificConversion
+GET {{apiUrl}}/conversions/68713be53031969c9d56690e
+
+### Step 14: Test CRUD Operations - Update Conversion
+# Note: Replace the ID below with an actual ID from step 12 response
+# @name step14_updateConversion
+PUT {{apiUrl}}/conversions/REPLACE_WITH_ACTUAL_ID
+Content-Type: application/json
+
+{
+  "roman": "XXV"
+}
+
+### Step 15: Verify Update
+# @name step15_verifyUpdate
+GET {{apiUrl}}/conversions/REPLACE_WITH_ACTUAL_ID
+
+### Step 16: Test CRUD Operations - Delete Conversion
+# Note: Replace the ID below with an actual ID from step 12 response (different from update)
+# @name step16_deleteConversion
+DELETE {{apiUrl}}/conversions/68713be53031969c9d56690e
+
+### Step 17: Verify Deletion (should return 404)
+# @name step17_verifyDeletion
+GET {{apiUrl}}/conversions/REPLACE_WITH_DELETED_ID
+
+### Step 18: Final State Check
+# @name step18_finalStateCheck
+GET {{apiUrl}}/conversions
+
+### Step 19: Final Complex Test
+# @name step19_finalComplexTest
+POST {{apiUrl}}/convert
+Content-Type: application/json
+
+{
+  "numeral": "MMMCMXCIX"
+}

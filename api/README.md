@@ -44,8 +44,19 @@ npm start
 
 ### Roman Numeral Conversion
 
-- **GET** `/api/roman/convert?numeral=XV` - Convert Roman numeral via query parameter
-- **POST** `/api/roman/convert` - Convert Roman numeral via request body
+- **GET** `/api/convert?numeral=XV` - Convert Roman numeral via query parameter
+- **POST** `/api/convert` - Convert Roman numeral via request body
+
+### Conversion History
+
+- **GET** `/api/history?limit=10` - Get conversion history with optional limit
+
+### CRUD Operations for Conversions
+
+- **GET** `/api/conversions` - Get all conversion records
+- **GET** `/api/conversions/:id` - Get a specific conversion record by ID
+- **PUT** `/api/conversions/:id` - Update a conversion record
+- **DELETE** `/api/conversions/:id` - Delete a conversion record by ID
 
 #### Example Usage
 
@@ -83,6 +94,87 @@ Content-Type: application/json
   "roman": "XV",
   "integer": 15,
   "success": true
+}
+```
+
+#### CRUD Examples
+
+**Get All Conversions:**
+
+```
+GET http://localhost:5000/api/conversions
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "count": 5,
+  "data": [
+    {
+      "_id": "65a1b2c3d4e5f6789012345a",
+      "roman": "XIV",
+      "integer": 14,
+      "createdAt": "2025-01-15T10:30:00.000Z",
+      "updatedAt": "2025-01-15T10:30:00.000Z"
+    }
+  ]
+}
+```
+
+**Get Single Conversion:**
+
+```
+GET http://localhost:5000/api/conversions/65a1b2c3d4e5f6789012345a
+```
+
+**Update Conversion:**
+
+```
+PUT http://localhost:5000/api/conversions/65a1b2c3d4e5f6789012345a
+Content-Type: application/json
+
+{
+  "roman": "XVI"
+}
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "message": "Conversion updated successfully",
+  "data": {
+    "_id": "65a1b2c3d4e5f6789012345a",
+    "roman": "XVI",
+    "integer": 16,
+    "createdAt": "2025-01-15T10:30:00.000Z",
+    "updatedAt": "2025-01-15T11:45:00.000Z"
+  }
+}
+```
+
+**Delete Conversion:**
+
+```
+DELETE http://localhost:5000/api/conversions/65a1b2c3d4e5f6789012345a
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "message": "Conversion deleted successfully",
+  "data": {
+    "_id": "65a1b2c3d4e5f6789012345a",
+    "roman": "XVI",
+    "integer": 16,
+    "createdAt": "2025-01-15T10:30:00.000Z",
+    "updatedAt": "2025-01-15T11:45:00.000Z"
+  }
 }
 ```
 

@@ -1,0 +1,47 @@
+# Quick API Test - New CRUD Endpoints
+# Quick test to verify all new endpoints are working
+
+@baseUrl = http://localhost:5000
+@apiUrl = {{baseUrl}}/api
+
+### 1. Health Check
+# @name healthCheck
+GET {{baseUrl}}/health
+
+### 2. Create a test conversion
+# @name createConversion
+POST {{apiUrl}}/convert
+Content-Type: application/json
+
+{
+  "numeral": "XLII"
+}
+
+### 3. Get all conversions (should include our new one)
+# @name getAllConversions
+GET {{apiUrl}}/conversions
+
+### 4. Get specific conversion (replace ID with actual ID from step 3)
+# @name getSpecificConversion
+GET {{apiUrl}}/conversions/REPLACE_WITH_ACTUAL_ID
+
+### 5. Update the conversion (replace ID with actual ID from step 3)
+# @name updateConversion
+PUT {{apiUrl}}/conversions/REPLACE_WITH_ACTUAL_ID
+Content-Type: application/json
+
+{
+  "roman": "L"
+}
+
+### 6. Verify the update
+# @name verifyUpdate
+GET {{apiUrl}}/conversions/REPLACE_WITH_ACTUAL_ID
+
+### 7. Delete the conversion (replace ID with actual ID from step 3)
+# @name deleteConversion
+DELETE {{apiUrl}}/conversions/REPLACE_WITH_ACTUAL_ID
+
+### 8. Verify deletion (should return 404)
+# @name verifyDeletion
+GET {{apiUrl}}/conversions/REPLACE_WITH_ACTUAL_ID
