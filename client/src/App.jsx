@@ -1,35 +1,77 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState } from 'react';
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+function App(){
+  const [roman, setRoman] = useState('');
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+  const handleConvert = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(''); className='input'
+    setResult(null);
+ 
+  try {
+      const res = await fetch('http://localhost:3000/api/convert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ roman }),
+      });
+
+ const data = await res.json();
+
+ if (!res.ok) {
+        throw new Error(data.message || 'Something went wrong');
+      }
+
+      setResult(data.integer);
+    } catch (err) {
+     console.error(err);
+     if (err.message === 'Failed to fetch') {
+        setError('❌ Sorry, something went wrong. Please try again later');
+    } else {
+        setError(err.message || 'Something went wrong');
+    }
+
+    } finally {
+      setLoading(false);
+    }
+  };
+
+   const handleClear = () => {
+    setRoman('');
+    setResult(null);
+    setError('');
+  };
+
+return(
+<div className='wrapper'>
+  <div className='card'>
+    <h1>🔢 Roman To Integer</h1>
+    <form onSubmit={handleConvert}>
+        <input
+        type="text"
+        placeholder='Enter Roman Numeral'
+        value={roman}
+        onChange={(e)=> setRoman(e.target.value.toUpperCase())}
+        required
+        />
+        <button type='submit' disabled={loading} className='btn convert-btn'>
+         {loading ? 'Converting...' : 'Convert'}
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    </form>
+    <button type="button" onClick={handleClear} className='btn clear-btn'>
+      Clear
+    </button>
 
-export default App
+    {result !==null && <p className='result'> ✅ Result : {result}</p>}
+    {error && <p className='error'>{error}</p>}
+  </div>
+</div>
+);
+}
+export default App;
