@@ -3,8 +3,16 @@ const Conversion = require('../models/Conversion')
 // Validate Roman numeral
 function isValidRoman(roman) {
   const validPattern =
-    /^(?=[MDCLXVI])M{0,4}(C[MD]|D?C{0,3})(X[CL]|L?X{0,3})(I[XV]|V?I{0,3})$/
-  return validPattern.test(roman.toUpperCase())
+    /^(?=[MDCLXVI])M{0,3}(C[MD]|D?C{0,3})(X[CL]|L?X{0,3})(I[XV]|V?I{0,3})$/
+
+  // First check the pattern
+  if (!validPattern.test(roman.toUpperCase())) {
+    return false
+  }
+
+  // Additional check: Roman numerals should not exceed 3999
+  const value = romanToInt(roman)
+  return value >= 1 && value <= 3999
 }
 
 // Convert Roman numeral to integer
